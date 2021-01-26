@@ -1,0 +1,12 @@
+{
+    "bot": {
+        "token": "Token do seu BOT",
+        "prefix": "Prefixo"
+    },
+    "mysql": {
+        "ip": "IP Sem Porta do MYSQL",
+        "user": "Usuario do MYSQL",
+        "password": "Senha do MYSQL",
+        "db": "Nome da Database"
+    }
+}
