@@ -32,8 +32,8 @@ exports.run = (client, message, args) => { // setando as bases
           .setTitle(`:revolving_hearts:  **Hmm, temos um novo casal aqui?**  :revolving_hearts:`)
     
           .setDescription(`**${message.mentions.users.first().username}** e **${message.mentions.users.last().username}** tem **${numero}%** de chance para dar certo!`)
-          .setColor('#f72929')
           .setImage(cookies[Math.floor(Math.random() * cookies.length)])
+          .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
                 message.reply(embed)
         }
 }

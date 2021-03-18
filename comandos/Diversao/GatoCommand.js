@@ -10,7 +10,7 @@ exports.run = async (client, message, args) => { // setando as bases
   .setColor("RANDOM")
   .setTitle("Gato 🐱")
   .setImage(body.file) // enviando o corpo/foto do gato 
-  .setFooter(message.guild.name + " - © 2021")
+  .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
   message.channel.send(catembed);
 }
 

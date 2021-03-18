@@ -7,10 +7,9 @@ exports.run = async (client, message, args) => { // setando as bases
   .get(`https://random.dog/woof.json`); // setando a API que estamos puxando (gerado pelo SuperAgent)
 
    let dogembed = new Discord.RichEmbed()
-   .setColor("RANDOM")
    .setTitle("Cachorro :dog:") 
    .setImage(body.url) // enviando o corpo/foto do cachorro
-   .setFooter(message.guild.name + " - © 2021")
+   .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
    message.channel.send(dogembed);
 
 }

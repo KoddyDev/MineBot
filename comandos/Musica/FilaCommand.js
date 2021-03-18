@@ -17,6 +17,7 @@ exports.run = async (client, message) => {
     .setColor('GREEN')
     .addField('Tocando agora', np, true)
     .setDescription(status)
+    .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
     message.channel.send(embed)
 }
 

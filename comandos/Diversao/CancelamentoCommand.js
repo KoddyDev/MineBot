@@ -43,8 +43,7 @@ let usernamee = user.username
       let embed = new Discord.MessageEmbed()
       .setTitle(`**:no_entry_sign: │ Cancelamento**`)
       .setDescription(cookies[Math.floor(Math.random() * cookies.length)])
-      .setColor("RED")
-      .setFooter(message.guild.name + " - © 2020")
+      .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").timestamp()
       message.channel.send(embed)    
     }
 

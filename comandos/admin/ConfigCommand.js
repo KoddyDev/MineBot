@@ -30,8 +30,8 @@ exports.run = async (client, message, args) => {
     **Sistema de IP + Status ** - 🥓
     **Sistema de Punição** - 🍒
     **Sistema de Canal de Comandos ( Obrigatorio )** -  `)
-    .setFooter(message.guild.name + " - © 2021")
-                                
+    .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
+    
     message.reply(embed).then(async msg => {
         msg.react("✨")
         msg.react("❤")
@@ -156,7 +156,7 @@ SugestionC.on("collect", async r2 => {
             if(!message.guild.channels.cache.get(channel.id)) return message.reply("Canal Invalido") && msg2
 const findG = await Sugestion.findOne({where:{grupo: message.guild.id}})
 if(!findG) {
-    Welcome.create({
+    Sugestion.create({
         grupo: message.guild.id,
         canal: channel.id
     })
@@ -218,6 +218,7 @@ if(!findG) {
     message.reply("✔ O Sistema de IP + Status foi ligado com sucesso!")
 } else {
     findG.set({
+        grupo: message.guild.id,
         ip: ip
     })
     message.reply("✔ O Sistema de IP + Status foi alterado com sucesso!")
@@ -239,7 +240,7 @@ PunishC.on("collect", r2 => {
             if(!message.guild.channels.cache.get(channel.id)) return message.reply("Canal Invalido") && msg2
 const findG = await Punish.findOne({where:{grupo: message.guild.id}})
 if(!findG) {
-    Status.create({
+    Punish.create({
         grupo: message.guild.id,
         canal: channel.id
     })

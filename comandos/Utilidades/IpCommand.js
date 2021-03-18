@@ -2,9 +2,13 @@ let Discord = require("discord.js")
 let superagent = require("superagent")
 let Status = require("../../db/StatusSystem")
 exports.run = async (client, message, args) => {
-let findG = Status.findOne({where:{grupo: message.guild.id}})
-if(findG) {
-    superagent.get('https://api.mcsrvstat.us/2/'+fingG.ip) ////// <- Coloque o IP do seu servidor 
+
+let findG = Status.findOne({where:{grupo: message.guild.id}, attributes: { ip }})
+const findIP = findG.ip
+console.log(findIP)
+let ip = findIP
+
+    superagent.get('https://api.mcsrvstat.us/2/'+ip) ////// <- Coloque o IP do seu servidor 
     .end((err, response) => {
        
       let ping = response.body.ping
@@ -20,10 +24,10 @@ if(findG) {
 
             let embed = new Discord.MessageEmbed()
             .setTitle("✨ | IP do Servidor")
-            .addField("🌹 **IP**", "`"+fingG.ip+"`")
+            .addField("🌹 **IP**", "`"+ip+"`")
             .addField("🐱‍🐉 **Status**", On, true)
             .setThumbnail(message.guild.iconURL())
-            .setFooter(message.guild.name + " - © 2021")
+            .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp()
      if(On === online1 ){  
              let version1 = '🎂 Não disponível!'
         let version2 = response.body.version
@@ -41,11 +45,11 @@ if(findG) {
                 coletor.on('collect', r2 => {
                      embed = new Discord.MessageEmbed()
                     .setTitle("✨ | IP do Servidor")
-                    .addField("🌹 **IP**", "`RedeSkull.com`")
+                    .addField("🌹 **IP**", "`"+ip+"`")
                     .addField("🐱‍🐉 **Status**", On, true)
 
                     .setThumbnail(message.guild.iconURL())
-                    .setColor("#FF0000")
+                    .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp()
                                         if(On === online1) {
                                                 let version1 = '🎂 Não disponível!'
         let version2 = response.body.version
@@ -62,9 +66,7 @@ if(findG) {
          })
 
 
-        } else {
-          message.reply("Comando desativado!")
-        }
+        
 
 }
 exports.help = {

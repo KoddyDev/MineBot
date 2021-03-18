@@ -11,7 +11,7 @@ module.exports = class Usuarios extends Model {
                 type: DataTypes.STRING
             }
         }, {
-            tableName: 'IP',
+            tableName: 'Status',
             timestamps: true,
             sequelize
         });

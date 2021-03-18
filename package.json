@@ -6,11 +6,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "discord.js": "^12.5.1",
+    "discord.js": "12.5.1",
     "fs": "^0.0.1-security",
     "mysql2": "^2.2.5",
     "path": "^0.12.7",
     "sequelize": "^6.4.0",
+    "node-fetch": "2.6.1",
     "ffmpeg": "^0.0.4",
     "ffmpeg-static": "^4.2.7",
     "jimp": "0.16.1",

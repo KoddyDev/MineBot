@@ -17,7 +17,7 @@ if(!message.member.hasPermission('ADMINISTRATOR')){
           message.delete();
             let canal = c.mentions.channels.first()
  c.delete()
-            if(!canal || !message.guilds.channels.cache.get(canal.id)){
+            if(!canal || !message.guild.channels.cache.get(canal.id)){
                 message.channel.send('**Este canal não existe.**')
             } else {
  
@@ -56,7 +56,7 @@ if(!message.member.hasPermission('ADMINISTRATOR')){
                                 .setTitle(titulo)
                                 .setColor('#ff6703')
                                 .setDescription(anuncio)
-                                .setFooter(message.guild.name + " - © 2021")
+                                .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
                                 client.guilds.cache.get(message.guild.id).channels.cache.get(canal.id).send(embed)
 if(mencionar == "Sim") {
                                 client.guilds.cache.get(message.guild.id).channels.cache.get(canal.id).send("@here").then(msgg => {

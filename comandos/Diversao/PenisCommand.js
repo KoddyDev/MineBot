@@ -6,7 +6,7 @@ exports.run = (client, message, args) => { // setando as bases
 
         .setTitle(`:hatched_chick: │ Tamanho do piupiu`)
         .setDescription(`O tamanho do seu piupiu é de ${numero}cm`)
-        .setColor('FFFF00')
+        .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
 
         message.channel.send(embed)
 }

@@ -16,7 +16,7 @@ exports.run = async (client, message, args) => {
       .setAuthor(`${user.username}`, user.displayAvatarURL())
       .setDescription(`[Baixar imagem](${avatar})`)
       .setImage(avatar)
-      .setFooter(`Comando solicitado por ${message.author.tag}`, `${message.author.displayAvatarURL()}`);
-  
+      .setColor("#00ffff")
+      .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp()
     message.channel.send(Embed);
   }

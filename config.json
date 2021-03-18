@@ -1,12 +1,17 @@
 {
     "bot": {
-        "token": "Token do seu BOT",
-        "prefix": "Prefixo"
+        "token": "NzYzMjAxMDQ2MjEzNjg5Mzg2.X30QXQ.x3wYXje4-wwwmvEQSljJtWqts7Q",
+        "prefix": "b."
     },
     "mysql": {
-        "ip": "IP Sem Porta do MYSQL",
-        "user": "Usuario do MYSQL",
-        "password": "Senha do MYSQL",
-        "db": "Nome da Database"
+        "ip": "51.81.115.201",
+        "user": "u131_GYzMiKX2qU",
+        "password": ".pb7kqAVxyyL7!^eun79HAN1",
+        "db": "s131_dbs"
+    },
+    "ids": {
+        "users": {
+            "dev": "759607573422014536"
+        }
     }
 }

@@ -12,18 +12,25 @@ const msg = message
     let member = message.mentions.members.first() // puxando um membro mencionavel
     if (!member) return message.reply("selecione um usuário válido!") // caso o autor esqueça de mencionar um membro, vamos dar o erro
     if (!member.bannable) return message.reply("não é possível punir este usuário.") // caso o membro tenha um cargo acima do seu bot, ele não vai banir
-    let reason = args.slice(1).join(' ')
+    let reason = args.slice(2).join(' ')
     if (!reason) reason = "Nenhuma razão fornecida" // requisitando um motivo desse banimento
-    await member.ban(reason) // caso não haja, iremos dar o erro
-      .catch(error => message.reply(`${message.author}, não foi possível completar esta punição devido ao erro: ${error}`)) // caso ocorra um erro no final, vamos filtrar e avisar qual foi
+    let day = args[1]
+    if(!day.isNaN && day) {
+      await member.ban({days: day, reason: reason}).catch(error => message.reply(`${message.author}, não foi possível completar esta punição devido ao erro: ${error}`)) // caso ocorra um erro no final, vamos filtrar e avisar qual foi
 
+    } else { 
+      await member.ban({reason: reason}).catch(error => message.reply(`${message.author}, não foi possível completar esta punição devido ao erro: ${error}`)) // caso ocorra um erro no final, vamos filtrar e avisar qual foi
+
+    }
+    
+     // caso não haja, iremos dar o erro
+      
       let pEmbed = new Discord.MessageEmbed()
-          .setTitle("Banimento")
+          .setTitle("✨ | Banimento")
           .addField("Usuário punido", member.user.tag)
           .addField("Punido por", message.author.tag)
           .addField("Motivo", reason)
-          .setFooter(`Autor ${message.author.tag}`, message.author.displayAvatarURL)
-          .setColor("DARK_RED")
+          .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
 
 client.channels.cache.get(findG.canal).send(pEmbed)
   

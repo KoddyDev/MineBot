@@ -61,7 +61,7 @@ exports.run = (client, message, args) => { // setando a base
     .addField(`Membros <:Identidade:774713882681278485> (${message.guild.memberCount})`, `Disponiveis: \`${online}\` **|** Ocupados: \`${ocupado}\` **|** Ausentes: \`${ausente}\` **|** Offlines: \`${offline}\`\n👦: \`${checkMembers(message.guild)}\`\n🤖: \`${checkBots(message.guild)}\``)
     .addField(`\:map:`, `${region[message.guild.region]}`, true)
     .addField(`Emojis`, `${emojis}`)
-
+    .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp()
     message.channel.send(embed)
 }
 

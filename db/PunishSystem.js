@@ -7,10 +7,7 @@ module.exports = class Usuarios extends Model {
                 type: DataTypes.STRING,
                 primaryKey: true
             },
-            MuteRole: { 
-                type: DataTypes.STRING
-            },
-            PunishChannel: { 
+            canal: { 
                 type: DataTypes.STRING
             }
         }, {

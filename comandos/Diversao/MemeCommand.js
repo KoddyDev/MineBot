@@ -38,7 +38,7 @@ exports.run = (client, message) => {
       let embed = new Discord.MessageEmbed()
       .setTitle("🎈| Memes - " + message.guild.name)
       .setImage(cookies[Math.floor(Math.random() * cookies.length)])
-      .setFooter(message.guild.name + " - © 2021")
+      .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
             message.reply(embed)
     }
 

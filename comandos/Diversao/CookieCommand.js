@@ -29,8 +29,7 @@ let cookembed = new Discord.MessageEmbed()
 .setColor("RANDOM")
 .setDescription(`<@${message.author.id}> deu um cookie para <@${user.id}>! 🍪`)
 .setImage(cookies[Math.floor(Math.random() * cookies.length)])
-.setFooter(message.guild.name + " - © 2020")
-
+.setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
 message.channel.send(cookembed)
    
 }

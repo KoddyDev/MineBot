@@ -36,7 +36,7 @@ exports.run = (client, message, args) => {
       let embed = new Discord.MessageEmbed()
       .setTitle(`**🧩 │Piada**`)
       .setDescription(cookies[Math.floor(Math.random() * cookies.length)])
-      .setFooter(message.guild.name + " - © 2021")
+      .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
       message.channel.send(embed)    
     }
 

@@ -21,8 +21,7 @@ exports.run = (client, message, args) => { // setando as bases
         .setTitle(`LIMPEZA`)
         .setDescription(`Limpei um total de \`${clean}\` mensagens.`)
         .setColor('#0000')
-        .setFooter(`Responsável: ${message.author.username}`)
-
+        .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").timestamp()
         message.channel.send(embed)
     } catch(e){ // procurando um erro
         console.log(e); // caso consiga encontrar, daremos o erro

@@ -17,8 +17,7 @@ exports.run = (client, message, args) => { // setando as bases
 
         .setTitle(`:rainbow_flag: │ Máquina Gay`)
         .setDescription(`**<@${usuario.id}>** é **${numero}%** gay`)
-        .setColor('#FF0084')
-        .setFooter(message.guild.name + " - © 2021")
+        .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
                             message.channel.send(embed)
         }
 }

@@ -17,8 +17,8 @@ exports.run = async(client, message, args) => {
     let lyricsEmbed = new MessageEmbed()
       .setTitle(`Letra da musica ${queue.songs[0].title}`)
       .setDescription(lyrics)
-      .setColor("GREEN")
-      .setTimestamp();
+      .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp();
+      
 
     if (lyricsEmbed.description.length >= 2048)
       lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;

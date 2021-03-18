@@ -14,8 +14,6 @@ exports.run = (client, message, args) =>{
     var acknowledgements = 'Não';
    
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
-    const randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); }); 
-    
     if(message.member.hasPermission("KICK_MEMBERS")){
         permissions.push("Kickar Membros");
     }
@@ -67,10 +65,8 @@ exports.run = (client, message, args) =>{
     const embed = new Discord.MessageEmbed()
         .setDescription(`<@${member.user.id}>`)
         .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL)
-        .setColor(randomColor)
-        .setFooter(`ID: ${message.author.id}`)
         .setThumbnail(member.user.displayAvatarURL)
-        .setTimestamp()
+        .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp()
         .addField("Status",`${status[member.user.presence.status]}`, true)
         .addField('Entrou em: ',`${moment(member.joinedAt).format("dddd, MMMM Do YYYY, HH:mm:ss")}`, true)
         .addField("Criado em: ",`${moment(message.author.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss")}`, true)

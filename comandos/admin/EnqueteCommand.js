@@ -39,7 +39,7 @@ if(!message.member.hasPermission('ADMINISTRATOR')){
                                 .setTitle(titulo)
                                 .setColor('#ff6703')
                                 .setDescription(anuncio)
-                                .setFooter(`Enquete enviada por por: ${message.author.username}`, message.author.displayAvatarURL())
+                                .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
                                 client.guilds.cache.get(message.guild.id).channels.cache.get(canal.id).send(embed).then(msg => {
                                   msg.react("✔")
                                   msg.react("❌")

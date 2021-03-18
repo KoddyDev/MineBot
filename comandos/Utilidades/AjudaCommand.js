@@ -15,7 +15,7 @@ exports.run = (client, message, args) => { // setando as bases
     .setTitle(`Central de Ajuda`)
     .setColor("#1482ff")
     .setDescription('`Clique no emoji para abrir a categoria` \n\n👮 **Comandos de Developer** \n🔧 **Comandos de utilidade** \n🎊 **Comandos de diversão**\n🎶 **Comandos de Musica**') 
-                  .setFooter(message.guild.name + " - © 2021")
+                          .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp()
     message.channel.send(embed).then(msg => { // evento para reagir a mensagem
   msg.react('👮').then(r => { // moderação
             msg.react('🔧') //utilidade
@@ -47,12 +47,13 @@ embed = new Discord.MessageEmbed()
                 .addField(`\`${config.bot.prefix}limpar\``, `Limpa um canal.`)
                 .addField(`\`${config.bot.prefix}expulsar\``, `Executa uma punição em um usúario.`)
                 .addField(`\`${config.bot.prefix}ping\``, `Verifica o seu ping e o ping do BOT`)
+                .addField(`\`${config.bot.prefix}config\``, `Configure o seu servidor para varios sistemas.`)
+                .addField(`\`${config.bot.prefix}add\``, `Me adicione em seu servidor!`)
                 
                 
                 
-              .setFooter(message.guild.name + " - © 2021")
-                .setColor("#808080")
-              .setFooter(message.guild.name + " - © 2021")
+                
+                  .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp()
 
             msg.edit(embed);
         })
@@ -66,7 +67,7 @@ embed = new Discord.MessageEmbed()
               .addField(`\`${config.bot.prefix}unload\``, `Descarrega um comando`)
               .addField(`\`${config.bot.prefix}blacklist\``, `Gerenciar servidores em blacklist`)
                 
-              .setFooter(message.guild.name + " - © 2021")
+                  .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp()
               .setColor("#4169E1")
             msg.edit(embed);
         })
@@ -90,7 +91,7 @@ embed = new Discord.MessageEmbed()
               .addField(`\`${config.bot.prefix}gay\``, `Mostra a porcentagem que você é gay`)
               .addField(`\`${config.bot.prefix}tweet\``, `Cria um falso tweet`)
               .addField(`\`${config.bot.prefix}gato\``, `Envia uma foto aleatória de um gato`)
-              .setFooter(message.guild.name + " - © 2021")
+                  .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp()
               .setColor("#FFFF00")
               msg.edit(embed);
         })
@@ -113,7 +114,7 @@ embed = new Discord.MessageEmbed()
             
               
               
-              .setFooter(message.guild.name + " - © 2021")
+                  .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp()
               .setColor("#ffa500")
               msg.edit(embed);
         })

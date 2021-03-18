@@ -36,7 +36,7 @@ exports.run = async (client, message, args) => {
         server.songs.push(song);
         let embed = new discord.MessageEmbed()
         .setTitle('Adicionada na fila de musica!')
-        .setColor('#00fff1')
+        .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp()
         .addField('Nome', song.title, true)
         .setThumbnail(song.thumbnail)
         .addField('Visualizações', song.views, true)
@@ -50,10 +50,10 @@ exports.run = async (client, message, args) => {
         voiceChannel: channel,
         connection: null,
         songs: [],
-        volume: 2,
+        volume: 4,
         playing: true
     };
-    message.client.queue.set(message.guild.id, queueConstruct);
+    client.queue.set(message.guild.id, queueConstruct);
     queueConstruct.songs.push(song);
 
 

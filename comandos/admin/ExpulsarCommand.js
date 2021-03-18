@@ -1,12 +1,15 @@
 const Discord = require('discord.js'); 
-
+const Punish = require("../../db/PunishSystem")
 module.exports.help = {
   'name': 'expulsar',
   'aliases': ['kick', 'kickar']
 }
 
 module.exports.run = async (client, message, args) => {
-    if(!message.member.hasPermission('KICK_MEMBERS')) return message.reply("Você não tem **permissão** suficiente !")
+  const findG = await Punish.findOne({where:{grupo: message.guild.id}})
+  if(findG) {
+   
+  if(!message.member.hasPermission('KICK_MEMBERS')) return message.reply("Você não tem **permissão** suficiente !")
     let member = message.mentions.members.first()
     if(!member)
       return message.reply("Por favor mencione um usuário válido !")
@@ -17,16 +20,16 @@ module.exports.run = async (client, message, args) => {
     await member.kick(reason)
       .catch(error => message.reply(`Desculpe ${message.author} não consegui kickar o membro devido o: ${error}`))
 
-      message.channel.send(`${message.author}`)
-
-      let pEmbed = new Discord.RichEmbed()
-          .setTitle("🔨 Kick")
+      let pEmbed = new Discord.MessageEmbed()
+          .setTitle("🔨 | Kick")
           .addField("Membro Kickado:", `${member.user.tag}`)
           .addField("Kickado por:", `${message.author.tag}`)
           .addField("Motivo:", `${reason}`)
-          .setFooter("Lojinha da Fran © 2020", client.user.avatarURL)
-          .setColor("DARK_RED").setTimestamp()
+          .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").timestamp()
 
-          message.channel.send(pEmbed)
-          message.channels.get('665373983465799693').send(pEmbed)
+          client.channels.cache.get(findG.canal).send(pEmbed)
+        } else 
+        {
+          message.reply("Comando desativado.") && message.guild.owner.send("O sistema de moderação não foi ativado, sugerido ativar para evitar este flood. Para ativar basta usar o comando m.config")
+  }
 }
