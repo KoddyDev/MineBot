@@ -3,12 +3,11 @@ let superagent = require("superagent")
 let Status = require("../../db/StatusSystem")
 exports.run = async (client, message, args) => {
 
-let findG = Status.findOne({where:{grupo: message.guild.id}, attributes: { ip }})
-const findIP = findG.ip
-console.log(findIP)
-let ip = findIP
+let findG = await Status.findOne({where:{grupo: message.guild.id}, attributes: ['ip']})
+if(findG) {
+console.log(findG)
 
-    superagent.get('https://api.mcsrvstat.us/2/'+ip) ////// <- Coloque o IP do seu servidor 
+    superagent.get('https://api.mcsrvstat.us/2/'+ findG.ip) ////// <- Coloque o IP do seu servidor 
     .end((err, response) => {
        
       let ping = response.body.ping
@@ -24,7 +23,7 @@ let ip = findIP
 
             let embed = new Discord.MessageEmbed()
             .setTitle("✨ | IP do Servidor")
-            .addField("🌹 **IP**", "`"+ip+"`")
+            .addField("🌹 **IP**", "`"+findG.ip+"`")
             .addField("🐱‍🐉 **Status**", On, true)
             .setThumbnail(message.guild.iconURL())
             .setFooter(message.guild.name + " - © 2021").setColor("#00ffff").setTimestamp()
@@ -45,7 +44,7 @@ let ip = findIP
                 coletor.on('collect', r2 => {
                      embed = new Discord.MessageEmbed()
                     .setTitle("✨ | IP do Servidor")
-                    .addField("🌹 **IP**", "`"+ip+"`")
+                    .addField("🌹 **IP**", "`"+findG.ip+"`")
                     .addField("🐱‍🐉 **Status**", On, true)
 
                     .setThumbnail(message.guild.iconURL())
@@ -66,7 +65,16 @@ let ip = findIP
          })
 
 
-        
+        } else {
+           let embed = new Discord.MessageEmbed()
+  .setColor('#ff0000')
+  .setTitle(config.emojis.no + ' | Configurações')
+  .setDescription(`Configurações Invalidas
+  
+  Olá ${message.author}, não configuraram este comando da forma correta.`)
+  .setFooter('Você acha que é um Erro? Reporte para KoddyDev#5439.')
+  message.reply(embed)   
+        }
 
 }
 exports.help = {

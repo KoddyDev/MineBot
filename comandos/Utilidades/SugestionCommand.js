@@ -4,8 +4,8 @@ module.exports.help = {
     'name': 'sugerir',
     'aliases': ['sugestao', 'sugestão']
 }
-exports.run = (client, message, args) => {
-    const findG = Sugestion.findOne({where:{grupo: message.guild.id}})
+exports.run = async (client, message, args) => {
+    const findG = await Sugestion.findOne({where:{grupo: message.guild.id}})
     if(findG) {
         let sugestion = message.content.split(' ').slice(1).join(' ')
         if(!sugestion) return message.reply("Você deve inserir uma sugestão amiguinho :)")

@@ -8,7 +8,7 @@ const Logs = require("../../db/LogsSystem");
 const Status = require("../../db/StatusSystem");
 const Punish = require("../../db/PunishSystem");
 const CommandChannel = require("../../db/ChannelCommandSystem")
-
+const Captcha = require("../../db/CaptchaSystem")
 module.exports.help = {
 'name': 'config',
 'aliases': ['configurar', 'configuration']
@@ -29,7 +29,8 @@ exports.run = async (client, message, args) => {
     **Sistema de Logs** - 🧨
     **Sistema de IP + Status ** - 🥓
     **Sistema de Punição** - 🍒
-    **Sistema de Canal de Comandos ( Obrigatorio )** -  `)
+    **Sistema de Canal de Comandos** -  🤖
+	**Sistema de Captcha** - 😍`)
     .setFooter(message.guild.name + " - © 2021").setColor("#00ffff")
     
     message.reply(embed).then(async msg => {
@@ -41,6 +42,7 @@ exports.run = async (client, message, args) => {
         msg.react("🥓")
         msg.react("🍒")
         msg.react("🤖")
+        msg.react("😍")
 
         const WelcomeF = (reaction, user, ) => reaction.emoji.name == ("✨") && user.id === message.author.id;
         const AutoRoleF = (reaction, user, ) => reaction.emoji.name == ("❤") && user.id === message.author.id;
@@ -50,6 +52,7 @@ exports.run = async (client, message, args) => {
         const StatusF = (reaction, user, ) => reaction.emoji.name == ("🥓") && user.id === message.author.id;
         const PunishF = (reaction, user, ) => reaction.emoji.name == ("🍒") && user.id === message.author.id;
         const CommandF = (reaction, user, ) => reaction.emoji.name == ("🤖") && user.id === message.author.id;
+        const CaptchaF = (reaction, user, ) => reaction.emoji.name == ("😍") && user.id === message.author.id;
         
         const WelcomeC = msg.createReactionCollector(WelcomeF)
         const AutoRoleC = msg.createReactionCollector(AutoRoleF);
@@ -59,6 +62,7 @@ exports.run = async (client, message, args) => {
         const StatusC = msg.createReactionCollector(StatusF);
         const PunishC = msg.createReactionCollector(PunishF);
         const ComandC = msg.createReactionCollector(CommandF);
+        const CaptchaC = msg.createReactionCollector(CaptchaF);
 
 WelcomeC.on("collect", async r2 => {
             message.channel.send('**Qual é o canal? **').then(async sg2 => {
@@ -77,7 +81,7 @@ WelcomeC.on("collect", async r2 => {
             })
             message.reply("✔ O Sistema de Bem Vindo foi ligado com sucesso!")
         } else {
-            findG.set({
+            findG.update({
                 canal: channel.id
             })
             message.reply("✔ O Sistema de Bem Vindo foi alterado com sucesso!")
@@ -90,6 +94,49 @@ WelcomeC.on("collect", async r2 => {
     return;
 });
 
+CaptchaC.on("collect", async r2 => {
+            message.channel.send('**Qual é o cargo para dar? **').then(async msg2 => {
+
+                let c2 = message.channel.createMessageCollector(x => x.author.id == message.author.id, { time: 60000 * 20,max:1})
+                .on('collect', async c => {
+                    
+                    const role = c.mentions.roles.first();
+                    
+                    if(!role) return message.reply("Insira um cargo!")
+                    if(!message.guild.roles.cache.has(role.id)) return message.reply("Cargo Invalido") && c2
+                                message.channel.send('**Qual é o canal? **').then(async msg2 => {
+
+                                    let c2 = message.channel.createMessageCollector(x => x.author.id == message.author.id, { time: 60000 * 20,max:1})
+                .on('collect', async c => {
+                    var channel = c.mentions.channels.first()
+                                        if(!channel) return message.reply("Insira um canal!")
+                    if(!message.guild.channels.cache.get(channel.id)) return message.reply("Canal Invalido")
+        const findG = await Captcha.findOne({where:{grupo: message.guild.id}})
+        if(!findG) {
+            Captcha.create({
+                grupo: message.guild.id,
+                cargo: role.id, 
+                canal: channel.id
+            })
+            message.reply("✔ O Sistema de Captcha foi ligado com sucesso!")
+        } else {
+            findG.update({
+                canal: channel.id
+            })
+            message.reply("✔ O Sistema de Captcha foi editado com sucesso!")
+
+            
+        }
+                })
+        
+    })
+                                    })
+        
+    })
+    return;
+});
+
+        
 AutoRoleC.on("collect", async r2 => {
     message.channel.send('**Qual é o cargo? **').then(async msg2 => {
         
@@ -106,7 +153,7 @@ AutoRoleC.on("collect", async r2 => {
                 })
                 message.reply("✔ O Sistema de AutoRole foi ligado com sucesso!")
             } else {
-                findG.set({
+                findG.update({
                     cargo: role.id
                 })
                 message.reply("✔ O Sistema de AutoRole foi alterado com sucesso!")
@@ -124,20 +171,20 @@ AntiIC.on("collect", async r2 => {
         let c2 = message.channel.createMessageCollector(async  x => x.author.id == message.author.id, { time: 60000 * 20,max:1})
         .on('collect', async c => {
             const cargo = c.mentions.roles.first()
-            if(!cargo) return message.reply("Insira um cargo!")
-            if(!message.guild.roles.cache.get(cargo)) return message.reply("❌ - Cargo invalido.")
+            if(!cargo) return message.reply("Insira um cargo!") && c2
+            if(!message.guild.roles.cache.get(cargo.id)) return message.reply("❌ - Cargo invalido.") 
             const findG = await AntiI.findOne({where:{grupo: message.guild.id}})
             if(!findG) {
-                AutoRole.create({
+                await AntiI.create({
                     grupo: message.guild.id,
-                    cargo: role.id
+                    cargo: cargo.id
                 })
-                message.reply("✔ O Sistema de AntiInvite foi ligado com sucesso! Somente o Cargo <@&"+role.id+"> poderá enviar invites.")
+                message.reply("✔ O Sistema de AntiInvite foi ligado com sucesso! Somente o Cargo <@&"+cargo.id+"> poderá enviar invites.")
             } else {
-                AutoRole.set({
-                    cargo: role.id
+                await findG.update({
+                    cargo: cargo.id
                 })
-                message.reply("O Sistema de AntiInvite foi ligado com sucesso! Somente o Cargo <@&"+role.id+"> poderá enviar invites.")
+                message.reply("O Sistema de AntiInvite foi ligado com sucesso! Somente o Cargo <@&"+cargo.id+"> poderá enviar invites.")
     
                 
             }
@@ -162,7 +209,7 @@ if(!findG) {
     })
     message.reply("✔ O Sistema de Sugestão foi ligado com sucesso!")
 } else {
-    findG.set({
+    findG.update({
         canal: channel.id
     })
     message.reply("✔ O Sistema de Bem Vindo foi alterado com sucesso!")
@@ -190,7 +237,7 @@ if(!findG) {
     })
     message.reply("✔ O Sistema de Logs foi ligado com sucesso!")
 } else {
-   await findG.set({
+   await findG.update({
         canal: channel.id
     })
     message.reply("✔ O Sistema de Logs foi alterado com sucesso!")
@@ -208,7 +255,7 @@ StatusC.on("collect", async r2 => {
         let c2 = message.channel.createMessageCollector(x => x.author.id == message.author.id, { time: 60000 * 20,max:1})
         .on('collect', async c => {
             const ip = c.content
-            if(!ip) return message.reply("Insira um ip!")
+            if(!ip) return message.reply("Insira um ip!") && c2
             const findG = await Status.findOne({where:{grupo: message.guild.id}})
 if(!findG) {
     Status.create({
@@ -217,7 +264,7 @@ if(!findG) {
     })
     message.reply("✔ O Sistema de IP + Status foi ligado com sucesso!")
 } else {
-    findG.set({
+    findG.update({
         grupo: message.guild.id,
         ip: ip
     })
@@ -246,7 +293,7 @@ if(!findG) {
     })
     message.reply("✔ O Sistema de Punição foi ligado com sucesso!")
 } else {
-    findG.set({
+    findG.update({
         canal: channel.id
     })
     message.reply("✔ O Sistema de Punição foi alterado com sucesso!")
@@ -285,7 +332,7 @@ if(!findG) {
     })
     message.reply("✔ O Sistema de Comandos por Chat foi ligado com sucesso!")
 } else {
-    findG.set({
+    findG.update({
         canal: channel.id,
         canalstf: channel2.id
     })

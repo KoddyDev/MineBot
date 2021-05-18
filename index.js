@@ -36,6 +36,7 @@ const ChannelComand = require("./db/ChannelCommandSystem")
 const BlackList = require("./db/BlackListSystem")
 const Ticket = require("./db/TicketSystem")
 const Plugin = require("./db/PluginSystem")
+const Captcha = require("./db/CaptchaSystem")
 
 /* 
 
@@ -87,7 +88,7 @@ client.on("ready", () => {
 
     Database.authenticate().then(() => {
         console.log("[DataBase] CONECTADO COM SUCESSO!")
-        AutoRole.init(Database).sync({force: false})
+        AutoRole.init(Database).sync({force: true})
         Welcome.init(Database).sync({force: false})
         AntiInvite.init(Database).sync({force: false})
         Sugestion.init(Database).sync({force: false})
@@ -97,17 +98,37 @@ client.on("ready", () => {
         ChannelComand.init(Database).sync({force: false})
         BlackList.init(Database).sync({force: false})
         Ticket.init(Database).sync({force: false})
-        Plugin.init(Database).sync({force: true})
+        Captcha.init(Database).sync({force: false})
+        Plugin.init(Database).sync({force: false})
         
     }).catch(error => {
             console.error("[DataBase] Ocorreu um erro ao conectar na Database: " + error);
         })
+    
+        var tabela = [ // criando uma variavel, nomeada de tabela 
+
+// uma notinha: toda vez que for criar uma nova presence na nossa tabela, bote uma vírgula no final!
+        {name: 'Paz para o mundo', type: 'STREAMING', url: 'https://www.twitch.tv/KoddyDev'},
+        {name: 'Use !ajuda', type: 'WATCHING'},
+        {name: '#FiqueEmCasa', type: 'LISTENING'},
+        {name: 'redetitanium.com', type: 'PLAYING'},
+        {name: 'Desenvolvido por KoddyDev#0001', type: 'LISTENING'},
+    ];
+
+    function setStatus() { // nomeamos ela de: setStatus
+        // agora, iremos criar um sistema randômico, alternando entre as opções que criamos para a tabela
+        var altstatus = tabela[Math.floor(Math.random() * tabela.length)]
+        client.user.setActivity(altstatus) // por fim, setando a presence. No caso, o jogo é a variavel que criamos 'altstatus'
+    }
+    setStatus(); // para finalizar, puxamos a function que criamos no inicio
+    setInterval(() => setStatus(), 50000) // e adicionamos um intervalo entre as presences
+
 
 })
 
 /* 
 
-      Sistema de AutoRole
+      Sistema de AutoRole e Captcha
 
 */
 
@@ -123,6 +144,8 @@ client.on("guildMemberAdd", async member => {
     }
   }) 
 
+
+
 /* 
 
       Sistema de Bem Vindo
@@ -131,6 +154,7 @@ client.on("guildMemberAdd", async member => {
 
   client.on("guildMemberAdd", async (member) => {
       const guild = member.guild;
+      console.log(guild)
     const findG = await Welcome.findOne({
       where:{
         grupo: member.guild.id
@@ -138,9 +162,15 @@ client.on("guildMemberAdd", async member => {
     })
     if(findG) {
         var entrada = new Discord.MessageEmbed()
-        .setTitle(`🌿 Entrada | ${guild.name}`)
-        .setDescription(`👋 Olá __${member.user.username}__, seja bem vindo(a) ao Discord Oficial da **${guild.name}**!`)
-        .addField(`📑 **| REGRAS**`, `Fique por dentro de todas as regras do servidor para evitar punição!`)
+        .setTitle(`📨 Recepção | Rede Titanium `)
+        .setDescription(`👋 Olá ${member.user.username}, seja bem vindo(a) ao 
+**Discord Oficial** da **Rede Titanium**!
+
+Fique por dentro de todas as regras 
+do servidor para evitar **punições**! #diretrizes
+
+IP para conexão: redetitanium.com
+Link de acesso para a loja: https://loja.redetitanium.com/team`)
         .addField(`🎈 Ainda bem que você entou!`, `Com você, agora possuímos ${guild.members.cache.size} jogadores`) 
         .setColor("RANDOM")
         .setFooter(`${guild.name} - Discord Oficial`, guild.iconURL())
@@ -150,20 +180,52 @@ client.on("guildMemberAdd", async member => {
     }
   }) 
 
+/*
+
+	Sistema de Captcha
+
+*/
+
+client.on('messageReactionAdd', async (reaction, user) => {
+
+    const member = await reaction.message.guild.members.fetch(user.id)
+    if(reaction.emoji.name === "✅") {
+        const findG = await AutoRole.findOne({
+      where:{
+        grupo: reaction.message.guild.id
+      }
+    })
+    if(!findG) {}
+        const findG2 = await Captcha.findOne({where:{
+            grupo: reaction.message.guild.id
+        }})
+        if(findG2) {
+            if( reaction.message.channel.id === findG2.canal) {
+                if(!member.roles.cache.has(findG2.cargo)) {
+                    member.roles.add(findG2.cargo)
+                }
+            }
+        }
+    }
+    }
+})
+
 /* 
 
       Sistema de Anti Invites
 
 */
 
-client.on("message", message => {
+client.on("message", async message => {
   let convite = /(discord.gg|discordapp.com)\/(invite)?/ig.test(message.content)
   if(convite === true) {
-  const findG = AntiInvite.findOne({where:{grupo: message.guild.id}, atribute: ['cargo']}) 
+  const findG = await AntiInvite.findOne({where:{grupo: message.guild.id}, atribute: ['cargo']}) 
   if(findG){
 
-  if(!message.member.roles.cache.has(findG.cargo)){
-  message.delete()
+  if(message.member.roles.cache.has(findG.cargo)){
+return console.log('Ele tem permissão')
+} else {
+      message.delete()
   message.reply('Não pode divulgar convites de outros servidores aqui!!! 😡')}
 }
   }
@@ -211,7 +273,7 @@ if(!findG) {
 */
 
 client.on("guildCreate", async guild => {
-  const findG = await  BlackList.findOne({where: {grupo: guild.id }})
+  const findG = await BlackList.findOne({where: {grupo: guild.id }})
 
 if(!findG) {
   return guild.owner.send("Você não está na BlackList!")
@@ -249,20 +311,13 @@ client.on("message", async (message) => {
   } else return
 
 
-  if(message.channel.id === findG.canal) {
+  if(message.channel.id === findG.canal || message.channel.id === findG.canalstf || message.member.hasPermission('ADMINISTRATOR')) {
 
     try {
         command.run(client, message, args)
     } catch (err) {
         console.log(err)
-    }
-  } else if(message.channel.id === findG.canalstf) {
-    try {
-        command.run(client, message, args)
-    } catch (err) {
-        console.log(err)
-    }
-    
+    }    
   } else message.reply("Você não pode executar comandos aqui bobinho.")}
 })
 

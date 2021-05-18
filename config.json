@@ -1,7 +1,7 @@
 {
     "bot": {
-        "token": "NzYzMjAxMDQ2MjEzNjg5Mzg2.X30QXQ.x3wYXje4-wwwmvEQSljJtWqts7Q",
-        "prefix": "b."
+        "token": "ODQzODI5MjM0MDY1NDczNTU2.YKJjNg.Otp5aN3vWtlbqO2ea_5-xAlYxag",
+        "prefix": "!"
     },
     "mysql": {
         "ip": "51.81.115.201",
